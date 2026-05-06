@@ -5,6 +5,9 @@
 
 #### IGNORING THE DATA
 data/
+data/input_domains.csv
+data/target_keywords.csv
+
 
 
 

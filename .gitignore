@@ -8,6 +8,9 @@ data/
 data/input_domains.csv
 data/target_keywords.csv
 
+#### IGNORING THE CONFIG FILES
+config.py
+
 
 
 

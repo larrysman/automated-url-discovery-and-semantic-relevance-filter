@@ -4,10 +4,13 @@ import numpy as np
 import pandas as pd
 import os
 from typing import Tuple
+# import config
+# from config.config import INPUT_DOMAINS_PATH, TARGET_KEYWORDS_PATH
 
 def loading_data(input_domains_path: str, target_keywords_path: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """
-    THE FUNCTION LOADS THE INPUT DOMAINS AND TARGET KEYWORDS DATA FROM THE GIVEN PATHS AND RETURNS THEM AS PANDAS DATAFRAMES.
+    THE FUNCTION LOADS THE INPUT DOMAINS AND TARGET KEYWORDS DATA FROM THE GIVEN PATHS AND RETURNS THEM AS
+    PANDAS DATAFRAMES.
 
     Args:
         input_domains_path | str: THE PATH TO THE INPUT DOMAINS CSV FILE.
@@ -30,6 +33,8 @@ def loading_data(input_domains_path: str, target_keywords_path: str) -> Tuple[pd
 if __name__ == "__main__":
     input_domains_path = "./data/input_domains.csv"
     target_keywords_path = "./data/target_keywords.csv"
+    # input_domains_path = INPUT_DOMAINS_PATH
+    # target_keywords_path = TARGET_KEYWORDS_PATH
 
     input_domains_df, target_keywords_df = loading_data(input_domains_path, target_keywords_path)
 

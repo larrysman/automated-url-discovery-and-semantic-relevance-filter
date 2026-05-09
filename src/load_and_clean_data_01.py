@@ -131,18 +131,18 @@ def load_and_normalize_data(
     # --------------------------------------------------
     return cleaned_domains_df.reset_index(drop=True), cleaned_keywords_df.reset_index(drop=True), diagnostics_check
 
-if __name__ == "__main__":
-    input_domains_path = "./data/input_domains.csv"
-    target_keywords_path = "./data/target_keywords.csv"
+# if __name__ == "__main__":
+#     input_domains_path = "./data/input_domains.csv"
+#     target_keywords_path = "./data/target_keywords.csv"
 
-    input_domains_df, target_keywords_df, diagnostics_check = load_and_normalize_data(input_domains_path, target_keywords_path)
+#     input_domains_df, target_keywords_df, diagnostics_check = load_and_normalize_data(input_domains_path, target_keywords_path)
 
-    print("INPUT DOMAINS DATA:")
-    print(input_domains_df.head())
+#     print("INPUT DOMAINS DATA:")
+#     print(input_domains_df.head())
 
-    print("\nTARGET KEYWORDS DATA:")
-    print(target_keywords_df.head())
+#     print("\nTARGET KEYWORDS DATA:")
+#     print(target_keywords_df.head())
 
-    print("\nDIAGNOSTICS SUMMARY:")
-    print(diagnostics_check)
+#     print("\nDIAGNOSTICS SUMMARY:")
+#     print(diagnostics_check)
 

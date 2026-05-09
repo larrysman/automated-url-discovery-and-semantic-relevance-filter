@@ -4,6 +4,8 @@ import numpy as np
 import pandas as pd
 import os
 from typing import Tuple
+import re
+
 # import config
 # from config.config import INPUT_DOMAINS_PATH, TARGET_KEYWORDS_PATH
 
@@ -43,4 +45,3 @@ if __name__ == "__main__":
 
     print("\nTARGET KEYWORDS DATA:")
     print(target_keywords_df.head())
-

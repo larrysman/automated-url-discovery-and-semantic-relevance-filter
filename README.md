@@ -81,7 +81,7 @@ The `Automated URL Discovery and Semantic Relevance Filter (AUDSRF)` pipeline is
 
 #### 🧠 `High‑Level Architecture`
 
-![alt text](images/im2.png)
+![alt text](images/im15.png)
 
 
 #### 🏗 `Project Folder Structure`
@@ -243,7 +243,7 @@ run: python -m src.audsrf_pipeline
 
 *The complete end-to-end running:*
 
-![alt text](images/im2.png)
+![alt text](images/im15.png)
 
 
 #### ⚙️ `Installation`
@@ -274,7 +274,7 @@ Output saved to ./output/
 
 #### 📊 `Final Output Structure`
 
-![alt text](images/im11.png)
+![alt text](images/im13.png)
 
 
 #### 🧪 `Quality Metrics`
@@ -291,7 +291,7 @@ Output saved to ./output/
 
 ###### **Output Snippet:**
 
-![alt text](images/im12.png)
+![alt text](images/im14.png)
 
 
 #### 🤝 `Contributing`

@@ -17,6 +17,9 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse, urlunparse
 from src.config import USER_AGENT, REQUEST_TIMEOUT, POLITE_DELAY, SAME_DOMAIN_ONLY, UTILITY_PATTERNS, MAX_CRAWL_DEPTH, MAX_PAGES_PER_DOMAIN
+from bs4 import XMLParsedAsHTMLWarning
+import warnings
+warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 
 
 # -----------------------------------------

@@ -87,6 +87,11 @@ The `Automated URL Discovery and Semantic Relevance Filter (AUDSRF)` pipeline is
 #### 🏗 `Project Folder Structure`
 
 
+![alt text](images/imm16.png)
+
+![alt text](images/imm15.png)
+
+
 
 #### 🔢 `Stage‑by‑Stage Documentation`
 

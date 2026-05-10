@@ -47,10 +47,12 @@ def preprocessing_domains(domains_df: pd.DataFrame) -> pd.DataFrame:
         soup = BeautifulSoup(html, "html.parser")
 
         # THE SEO TITLE OF THE PAGE
-        title = soup.title.string.strip() if soup.title else None
+        # title = soup.title.string.strip() if soup.title else None
+        title = soup.title.get_text(strip=True) if soup.title else None
         
         # THE MAIN HEADING OF THE PAGE
-        h1 = soup.find("h1").get_text(strip=True) if soup.find("h1") else None
+        h1_tag = soup.find("h1")
+        h1 = h1_tag.get_text(strip=True) if h1_tag else None
 
         # ITERATE OVER THE PAGE FOR HYPERTEXT REFRENCE (HREF)
         internal_links = len([

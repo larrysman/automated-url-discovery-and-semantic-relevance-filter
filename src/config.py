@@ -35,7 +35,7 @@ SAME_DOMAIN_ONLY = True
 # ---------------------------------------------------------
 
 # Minimum relevance score required to keep a page
-MIN_RELEVANCE_SCORE = 0.35
+MIN_RELEVANCE_SCORE = 0.02
 
 
 # ---------------------------------------------------------

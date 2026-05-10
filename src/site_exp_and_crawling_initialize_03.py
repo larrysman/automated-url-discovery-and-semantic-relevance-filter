@@ -18,7 +18,7 @@ MAX_DEPTH, MAX_PAGES_PER_DOMAIN, SAME_DOMAIN_ONLY, POLITE_DELAY, TIMEOUT, USER_A
 """
 
 import pandas as pd
-from config import PRIORITY_WEIGHTS, MAX_CRAWL_DEPTH, MAX_PAGES_PER_DOMAIN
+from src.config import PRIORITY_WEIGHTS, MAX_CRAWL_DEPTH, MAX_PAGES_PER_DOMAIN
 
 # -------------------------------------------------------------
 # BUILD THE HOMEPAGE URL
@@ -34,30 +34,67 @@ def build_homepage_url(domain: str) -> str:
 # --------------------------------------------------------------
 # COMPUTE PRIORITY SCORE
 # --------------------------------------------------------------
+# def compute_priority_score(homepage_title: str, homepage_h1: str, internal_links: int, keywords: list) -> float:
+#     """
+#     COMPUTES A PRIORITY SCORE FOR THE DOMAIN BASED ON HOMEPAGE SIGNALS
+#     """
+#     score = 1.0
+
+#     # KEYWORD MATCHING IN THE TITLE
+#     if homepage_title:
+#         if any(title in homepage_title.lower() for title in keywords):
+#             score += PRIORITY_WEIGHTS["keyword_title_bonus"]
+
+#     # KEYWORD MATCHING IN H1
+#     if homepage_h1:
+#         if any(tag in homepage_h1.lower() for tag in keywords):
+#             score += PRIORITY_WEIGHTS["keyword_h1_bonus"]
+
+#     # INTERNAL LINK RICHNESS
+#     if internal_links > 30:
+#         score += PRIORITY_WEIGHTS["internal_links_high"]
+#     elif internal_links > 10:
+#         score += PRIORITY_WEIGHTS["internal_links_medium"]
+
+#     return score
+
 def compute_priority_score(homepage_title: str, homepage_h1: str, internal_links: int, keywords: list) -> float:
     """
-    COMPUTES A PRIORITY SCORE FOR THE DOMAIN BASED ON HOMEPAGE SIGNALS
+    COMPUTES A PRIORITY SCORE FOR THE DOMAIN BASED ON HOMEPAGE SIGNALS.
+    SAFELY HANDLES None, NaN, EMPTY STRINGS, AND MIXED CASE.
     """
+
+    # Base score
     score = 1.0
 
-    # KEYWORD MATCHING IN THE TITLE
-    if homepage_title:
-        if any(title in homepage_title.lower() for title in keywords):
-            score += PRIORITY_WEIGHTS["keyword_title_bonus"]
+    # --- SAFELY NORMALIZE TITLE ---
+    if homepage_title is None:
+        homepage_title = ""
+    homepage_title = str(homepage_title).lower()
 
-    # KEYWORD MATCHING IN H1
-    if homepage_h1:
-        if any(tag in homepage_h1.lower() for tag in keywords):
-            score += PRIORITY_WEIGHTS["keyword_h1_bonus"]
+    # --- SAFELY NORMALIZE H1 ---
+    if homepage_h1 is None:
+        homepage_h1 = ""
+    homepage_h1 = str(homepage_h1).lower()
 
-    # INTERNAL LINK RICHNESS
+    # --- SAFELY NORMALIZE KEYWORDS ---
+    keywords = [str(kw).lower().strip() for kw in keywords if kw]
+
+    # --- KEYWORD MATCHING IN TITLE ---
+    if any(kw in homepage_title for kw in keywords):
+        score += PRIORITY_WEIGHTS["keyword_title_bonus"]
+
+    # --- KEYWORD MATCHING IN H1 ---
+    if any(kw in homepage_h1 for kw in keywords):
+        score += PRIORITY_WEIGHTS["keyword_h1_bonus"]
+
+    # --- INTERNAL LINK RICHNESS ---
     if internal_links > 30:
         score += PRIORITY_WEIGHTS["internal_links_high"]
     elif internal_links > 10:
         score += PRIORITY_WEIGHTS["internal_links_medium"]
 
     return score
-
 
 # --------------------------------------------------------------------------
 # CREATE QUERY ENTRY

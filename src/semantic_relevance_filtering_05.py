@@ -9,7 +9,7 @@ UTILITY PAGE EXCLUSION - FURTHER REINFORCED AT THIS STAGE THOUGH COMPLETED IN ST
 
 import pandas as pd
 from bs4 import BeautifulSoup
-from config import MAX_TEXT_LENGTH, MIN_RELEVANCE_SCORE
+from src.config import MAX_TEXT_LENGTH, MIN_RELEVANCE_SCORE
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -60,22 +60,52 @@ def lexical_match_score(url: str, title: str, h1: str, keywords: list) -> float:
 # -----------------------------------------
 # SEMANTIC SIMILARITY FOR TEXT AND KEYWORDS
 # -----------------------------------------
-def semantic_similarity(text: str, keywords: list) -> float:
+# def semantic_similarity(text: str, keywords: list) -> float:
+#     """
+#     THIS FUNCTION COMPUTES SEMANTIC SIMILARITY BETWEEN PAGE TEXT AND KEYWORDS USING TF-IDF AND COSINE SIMILARITY.
+#     """
+#     if not text:
+#         return 0.0
+
+#     docs = [text] + keywords
+#     vectorizer = TfidfVectorizer(stop_words="english")
+#     tfidf = vectorizer.fit_transform(docs)
+
+#     page_vec = tfidf[0:1]
+#     keyword_vecs = tfidf[1:]
+
+#     sims = cosine_similarity(page_vec, keyword_vecs)[0]
+#     return float(sims.max()) if len(sims) else 0.0
+
+
+def semantic_similarity_per_keyword(text: str, keywords: list):
     """
-    THIS FUNCTION COMPUTES SEMANTIC SIMILARITY BETWEEN PAGE TEXT AND KEYWORDS USING TF-IDF AND COSINE SIMILARITY.
+    COMPUTES SEMANTIC SIMILARITY BETWEEN PAGE TEXT AND EACH KEYWORD INDIVIDUALLY.
+    Returns:
+        BEST_SCORE | FLOAT
+        BEST_KEYWORD | STR
     """
     if not text:
-        return 0.0
+        return 0.0, None
 
-    docs = [text] + keywords
-    vectorizer = TfidfVectorizer(stop_words="english")
-    tfidf = vectorizer.fit_transform(docs)
+    best_score = 0.0
+    best_keyword = None
 
-    page_vec = tfidf[0:1]
-    keyword_vecs = tfidf[1:]
+    for kw in keywords:
+        docs = [text, kw]
+        vectorizer = TfidfVectorizer(stop_words="english")
+        tfidf = vectorizer.fit_transform(docs)
 
-    sims = cosine_similarity(page_vec, keyword_vecs)[0]
-    return float(sims.max()) if len(sims) else 0.0
+        page_vec = tfidf[0:1]
+        kw_vec = tfidf[1:2]
+
+        sim = cosine_similarity(page_vec, kw_vec)[0][0]
+
+        if sim > best_score:
+            best_score = sim
+            best_keyword = kw
+
+    return float(best_score), best_keyword
 
 
 # ------------------------------------------------------
@@ -143,20 +173,27 @@ def orchestrate_semantic_filtering(queue_df: pd.DataFrame, keywords_df: pd.DataF
         lexical = lexical_match_score(url, title, h1, keywords)
 
         # SEMANTIC SCORE
-        semantic = semantic_similarity(text, keywords)
-
-        # FINAL RELEVANCE SCORE
-        relevance = compute_relevance_score(lexical, semantic)
+        # semantic = semantic_similarity(text, keywords)
+        semantic_score, semantic_kw = semantic_similarity_per_keyword(text, keywords)
 
         # TRIGGER KEYWORD
-        trigger = detect_trigger_keyword(text, url, title, h1, keywords)
+        lexical_kw = detect_trigger_keyword(text, url, title, h1, keywords)
+        # trigger = detect_trigger_keyword(text, url, title, h1, keywords)
+        trigger_keyword = semantic_kw if semantic_kw else lexical_kw
+
+        # FINAL RELEVANCE SCORE
+        # relevance = compute_relevance_score(lexical, semantic)
+        relevance = compute_relevance_score(lexical, semantic_score)
+
+        # TRIGGER KEYWORD
+        # trigger = detect_trigger_keyword(text, url, title, h1, keywords)
 
         # FILTERING BY RELEVANCE
         if filter_by_relevance(relevance):
             results.append({
                 "Source Domain": row["domain"],
                 "Target URL": url,
-                "Detected Keyword": trigger,
+                "Detected Keyword": trigger_keyword, #trigger
                 "Relevance Score": relevance
             })
 

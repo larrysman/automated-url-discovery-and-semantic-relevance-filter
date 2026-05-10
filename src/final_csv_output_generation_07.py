@@ -25,15 +25,18 @@ def ensure_output_folder_exists(output_folder: str):
 # ---------------------------------------
 # VALIDATE OUTPUT DATAFRAME
 # ---------------------------------------
-def validate_output_dataframe(df: pd.DataFrame):
+def validate_output_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     """
     THIS FUNCTION VALIDATES THAT THE DATAFRAME IS NOT EMPTY AND HAS REQUIRED COLUMNS
     AND READY FOR EXPORT TO CSV.
     """
-    if df is None or df.empty:
-        raise ValueError("The output DataFrame is empty. Nothing to export.")
-
     required_columns = ["Source Domain", "Target URL", "Detected Keyword", "Relevance Score"]
+
+    if df is None or df.empty:
+        print("STAGE 07 - Output DataFrame is empty. Creating empty CSV with Headers")
+        return pd.DataFrame(columns=required_columns)
+
+    # ENSURE REQUIRED COLUMNS EXIST
     for col in required_columns:
         if col not in df.columns:
             raise ValueError(f"Missing required column: {col}")
@@ -91,7 +94,3 @@ def orchestrate_csv_export(final_df: pd.DataFrame, output_folder: str = "output"
     saved_path = save_dataframe_to_csv(validated_df, output_folder, filename)
 
     return saved_path
-
-
-
-

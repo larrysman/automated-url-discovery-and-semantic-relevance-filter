@@ -16,7 +16,7 @@ import time
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse, urlunparse
-from config import USER_AGENT, REQUEST_TIMEOUT, POLITE_DELAY, SAME_DOMAIN_ONLY, UTILITY_PATTERNS, MAX_CRAWL_DEPTH, MAX_PAGES_PER_DOMAIN
+from src.config import USER_AGENT, REQUEST_TIMEOUT, POLITE_DELAY, SAME_DOMAIN_ONLY, UTILITY_PATTERNS, MAX_CRAWL_DEPTH, MAX_PAGES_PER_DOMAIN
 
 
 # -----------------------------------------
@@ -45,10 +45,29 @@ def fetch_page(url: str) -> tuple:
 # -------------------------------------------------------------------------
 # EXTRACTING THE LINKS - HTML AND BASE_URL
 # -------------------------------------------------------------------------
+# def extract_links(html: str, base_url: str) -> list:
+#     """
+#     EXTRACTS ALL LINKS FROM A PAGE AND RETURNS ABSOLUTE URLS.
+#     IT EXTRACTS ALL <a href=""> LINKS AND RESOLVES RELATIVES URLs
+#     """
+#     if not html:
+#         return []
+
+#     soup = BeautifulSoup(html, "html.parser")
+#     links = []
+
+#     for tag in soup.find_all("a", href=True):
+#         href = tag["href"].strip()
+#         absolute = urljoin(base_url, href)
+#         links.append(absolute)
+
+#     return links
+
 def extract_links(html: str, base_url: str) -> list:
     """
-    EXTRACTS ALL LINKS FROM A PAGE AND RETURNS ABSOLUTE URLS.
-    IT EXTRACTS ALL <a href=""> LINKS AND RESOLVES RELATIVES URLs
+    EXTRACTS ALL VALID, CRAWLABLE LINKS FROM A PAGE.
+    - Resolves relative URLs
+    - Removes empty, fragment, mailto, tel, javascript links
     """
     if not html:
         return []
@@ -58,6 +77,24 @@ def extract_links(html: str, base_url: str) -> list:
 
     for tag in soup.find_all("a", href=True):
         href = tag["href"].strip()
+
+        # Skip empty hrefs
+        if not href:
+            continue
+
+        # Skip fragments (#, #section)
+        if href.startswith("#"):
+            continue
+
+        # Skip javascript links
+        if href.lower().startswith("javascript:"):
+            continue
+
+        # Skip mailto and tel links
+        if href.lower().startswith(("mailto:", "tel:")):
+            continue
+
+        # Convert to absolute URL
         absolute = urljoin(base_url, href)
         links.append(absolute)
 

@@ -7,28 +7,28 @@ THIS IS THE CHAINED PIPELINE FOR ALL THE STAGES 01 - 08 AND RUN THE PIPELINE END
 import pandas as pd
 
 # ------- STAGE 01 -----------
-from load_and_clean_data_01 import load_and_normalize_data
+from src.load_and_clean_data_01 import load_and_normalize_data
 
 # -------- STAGE 02 ----------
-from domain_preprocessing_02 import preprocessing_domains
+from src.domain_preprocessing_02 import preprocessing_domains
 
 # -------- STAGE 03 ----------
-from site_exp_and_crawling_initialize_03 import initialize_crawl_queue
+from src.site_exp_and_crawling_initialize_03 import initialize_crawl_queue
 
 # --------- STAGE 04 ---------
-from crawling_and_deep_url_discovery_04 import orchestrate_crawl_query
+from src.crawling_and_deep_url_discovery_04 import orchestrate_crawl_query
 
 # --------- STAGE 05 ---------
-from semantic_relevance_filtering_05 import orchestrate_semantic_filtering
+from src.semantic_relevance_filtering_05 import orchestrate_semantic_filtering
 
 # --------- STAGE 06 --------
-from assembling_output_06 import assemble_spreadsheet_csv_output
+from src.assembling_output_06 import assemble_spreadsheet_csv_output
 
 # --------- STAGE 07 --------
-from final_csv_output_generation_07 import orchestrate_csv_export
+from src.final_csv_output_generation_07 import orchestrate_csv_export
 
 # --------- STAGE 08 --------
-from quality_checks_and_success_metrics_08 import orchestrate_quality_checks
+from src.quality_checks_and_success_metrics_08 import orchestrate_quality_checks
 
 
 def run_full_pipeline(

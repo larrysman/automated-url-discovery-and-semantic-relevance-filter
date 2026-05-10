@@ -10,9 +10,20 @@ data/target_keywords.csv
 
 #### IGNORING THE CONFIG FILES
 config/
+src/config.py
+
 
 #### IGNORING PYTHON CACHE FILES
 __pycache__/
+
+# IGNORING BEST MATCH 25 (BM25) STAGE 5 SCRIPTS
+src/semantic_relevance_filtering_05_.py
+src/load_data.py
+src/utility.py
+
+
+
+
 
 
 

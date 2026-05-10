@@ -18,8 +18,12 @@ __pycache__/
 
 # IGNORING BEST MATCH 25 (BM25) STAGE 5 SCRIPTS
 src/semantic_relevance_filtering_05_.py
-src/load_data.py
-src/utility.py
+
+# IGNORING UNUSED LOAD AND UTILITY SCRIPTS
+src/load_data_not_needed.py
+src/utility_not_needed.py
+
+
 
 
 

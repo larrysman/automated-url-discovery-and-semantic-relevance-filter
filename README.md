@@ -306,7 +306,9 @@ Pull requests are welcome and Kindly open an issue first to discuss changes.
 
 #### 📄 `License`
 
-**WHITE LIGHT DIGITAL MARKETING - WLDM**
+This project is provided for demonstrating a core competences and need to leverage on robust engineering frameworks and pipeline to enhance content delivery. For reprodicibility, kindly request for authorization.
+
+`© 2026 Olanrewaju. All rights reserved.`
 
 
 #### 🎉 `Acknowledgements`
